@@ -1,16 +1,23 @@
 import { expect, Page } from "@playwright/test";
 
 export default class ProductPage {
+  private readonly sizeSelector = ".swatch-option.text";
+  private readonly colorSelector = ".swatch-option.color";
+  private readonly quantitySelector = "#qty";
+  private readonly successSelector = ".success";
+  private readonly cartNumberSelector = ".counter-number";
+  private readonly cartIconSelector = ".showcart";
+
   constructor(private page: Page) {}
 
-  async verifyFirstProductDetailPage() {
-    await expect(this.page).toHaveTitle("Radiant Tee");
+  async verifyFirstProductDetailPage(productName: string) {
+    await expect(this.page).toHaveTitle(productName);
   }
 
-  async selectRequiredItems() {
-    await this.page.locator(".swatch-option.text").first().click();
-    await this.page.locator(".swatch-option.color").first().click();
-    await this.page.locator("#qty").fill("1");
+  async selectRequiredItems(quantity: string) {
+    await this.page.locator(this.sizeSelector).first().click();
+    await this.page.locator(this.colorSelector).first().click();
+    await this.page.locator(this.quantitySelector).fill(quantity);
   }
 
   async clickAddToCartBtn() {
@@ -20,18 +27,18 @@ export default class ProductPage {
       .click();
   }
 
-  async verifyCartNumber() {
-    await expect(this.page.locator(".counter-number")).toHaveText("1");
+  async verifyCartNumber(number: string) {
+    await expect(this.page.locator(this.cartNumberSelector)).toHaveText(number);
   }
 
-  async verifySuccessMsgAddToCart() {
-    await expect(this.page.locator(".success")).toHaveText(
-      "You added Radiant Tee to your shopping cart.",
+  async verifySuccessMsgAddToCart(successMsg: string) {
+    await expect(this.page.locator(this.successSelector)).toHaveText(
+      successMsg,
     );
   }
 
   async clickCartIcon() {
-    await this.page.locator(".showcart").click();
+    await this.page.locator(this.cartIconSelector).click();
   }
 
   async verifyProceedToCheckoutBtnIsSeen() {

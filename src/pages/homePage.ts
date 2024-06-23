@@ -1,30 +1,25 @@
 import { expect, Page } from "@playwright/test";
 
 export default class HomePage {
-  readonly FirstProduct = this.page
-    .locator(".product-item-name")
-    .first()
-    .textContent();
+  private readonly productPhotoSelector = ".product-item-photo";
   constructor(private page: Page) {}
 
   async navigateToUrl() {
     await this.page.goto("/");
   }
 
-  async clickSignInLink() {
-    await this.page.getByRole("link").getByText("Sign In").click();
+  async clickSignInLink(text: string) {
+    await this.page.getByRole("link").getByText(text).click();
   }
 
-  async verifyLoggedInUserInHomePage() {
+  async verifyLoggedInUserInHomePage(greetUser: string) {
     await expect(
-      this.page.getByRole("banner").getByText("Welcome, Ramesh Murugan!"),
+      this.page.getByRole("banner").getByText(greetUser),
     ).toBeVisible();
   }
 
-  async verifyNavigatedToHomePage() {
-    await expect(this.page).toHaveURL(
-      "https://magento.softwaretestingboard.com/",
-    );
+  async verifyNavigatedToHomePage(url: string) {
+    await expect(this.page).toHaveURL(url);
   }
 
   async clickDropDownArrow() {
@@ -45,6 +40,6 @@ export default class HomePage {
   }
 
   async clickFirstProductLink() {
-    await this.page.locator(".product-item-photo").first().click();
+    await this.page.locator(this.productPhotoSelector).first().click();
   }
 }

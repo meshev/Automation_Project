@@ -1,33 +1,39 @@
 import { expect, Page } from "@playwright/test";
 
 export default class CheckoutPage {
+  private readonly signInBtnSelector = ".action-auth-toggle";
+  private readonly loginPopUpSelector = ".modal-inner-wrap:visible";
+  private readonly emailSelector = "#login-email";
+  private readonly passwordSelector = "#login-password";
+  private readonly buttonSelector = "[type='submit']:visible";
+
   constructor(private page: Page) {}
 
-  async verifyCheckoutPageTitle() {
-    await expect(this.page).toHaveTitle("Checkout");
+  async verifyCheckoutPageTitle(title: string) {
+    await expect(this.page).toHaveTitle(title);
   }
 
   async verifySignInBtn() {
-    await expect(this.page.locator(".action-auth-toggle")).toBeVisible();
+    await expect(this.page.locator(this.signInBtnSelector)).toBeVisible();
   }
 
   async clickSignInButton() {
     await this.page
-      .locator("[type='submit']:visible")
+      .locator(this.buttonSelector)
       .filter({ hasText: "Sign In" })
       .click();
   }
 
   async verifyLoginPopUP() {
-    await expect(this.page.locator(".modal-inner-wrap:visible")).toBeVisible();
+    await expect(this.page.locator(this.loginPopUpSelector)).toBeVisible();
   }
 
-  async fillLoginDetails() {
-    await this.page.locator("#login-email").fill("rameshmtester1@gmail.com");
-    await this.page.locator("#login-password").fill("Testing@123");
+  async fillLoginDetails(email: string, password: string) {
+    await this.page.locator(this.emailSelector).fill(email);
+    await this.page.locator(this.passwordSelector).fill(password);
   }
 
   async clickSignInBtn() {
-    await this.page.locator(".action-auth-toggle").click();
+    await this.page.locator(this.signInBtnSelector).click();
   }
 }

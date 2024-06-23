@@ -1,30 +1,28 @@
 import { expect, Page } from "@playwright/test";
 
 export default class LoginPage {
+  private readonly emailSelector = "#email";
+  private readonly passwordSelector = "#pass";
+  private readonly buttonSelector = "[type='submit']";
+  private readonly resetPasswordEmailSelector = "#email_address";
+
   constructor(private page: Page) {}
 
-  async verifySignInPageTitle() {
-    await expect(this.page).toHaveTitle(/Customer Login/);
+  async verifySignInPageTitle(title: string) {
+    await expect(this.page).toHaveTitle(title);
   }
 
-  async fillValidUserCredentials() {
-    await this.page.locator("#email").fill("rameshmtester@gmail.com");
-    await this.page.locator("#pass").fill("Testing@123");
+  async fillUserCredentials(email: string, password: string) {
+    await this.page.locator(this.emailSelector).fill(email);
+    await this.page.locator(this.passwordSelector).fill(password);
   }
 
-  async clickSignInBtn() {
-    await this.page.locator("[type='submit']").getByText("Sign In").click();
+  async clickSignInBtn(text: string) {
+    await this.page.locator(this.buttonSelector).getByText(text).click();
   }
 
-  async fillInValidUserCredentials() {
-    await this.page.locator("#email").fill("rameshmurugan@gmail.com");
-    await this.page.locator("#pass").fill("Testing@123");
-  }
-
-  async verifyErrorMsgForInValidUser() {
-    await expect(this.page.locator(".error")).toHaveText(
-      "The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.",
-    );
+  async verifyErrorMsgForInValidUser(errorMsg: string) {
+    await expect(this.page.locator(".error")).toHaveText(errorMsg);
   }
 
   async verifyForgotYourPasswordLinkIsVisible() {
@@ -40,14 +38,12 @@ export default class LoginPage {
       .click();
   }
 
-  async verifyNavigatedToForgotYourPasswordPage() {
-    await expect(this.page).toHaveURL(
-      "https://magento.softwaretestingboard.com/customer/account/forgotpassword/",
-    );
+  async verifyNavigatedToForgotYourPasswordPage(url: string) {
+    await expect(this.page).toHaveURL(url);
   }
 
-  async fillEmailForResetPassword() {
-    await this.page.locator("#email_address").fill("rameshmtester@gmail.com");
+  async fillEmailForResetPassword(email: string) {
+    await this.page.locator(this.resetPasswordEmailSelector).fill(email);
   }
 
   async clickResetMyPasswordBtn() {
@@ -57,9 +53,7 @@ export default class LoginPage {
       .click();
   }
 
-  async verifySuccesMsgResetPassword() {
-    await expect(this.page.locator(".success")).toHaveText(
-      "If there is an account associated with rameshmtester@gmail.com you will receive an email with a link to reset your password.",
-    );
+  async verifySuccesMsgResetPassword(successMsg: string) {
+    await expect(this.page.locator(".success")).toHaveText(successMsg);
   }
 }
