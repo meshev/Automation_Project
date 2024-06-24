@@ -1,6 +1,5 @@
 # Playwright TypeScript Automation Framework
 
-![Playwright Logo](https://playwright.dev/img/playwright-logo.png)
 
 ## Overview
 
@@ -27,7 +26,7 @@ This repository contains a TypeScript-based automation framework utilizing Playw
 1. Clone the repository:
 
    ```bash
-   git clone <https://github.com/meshev/Automation_Project>
+   git clone https://github.com/meshev/Automation_Project
    cd playwright-typescript-automation
    ```
 
@@ -53,6 +52,7 @@ Modify the configuration files (`playwright.config.ts`) to customize browser set
 
 ```plaintext
 playwright-typescript-automation/
+│
 ├── src/
 │   ├── config/
 │   │   └── playwright.config.ts
