@@ -1,6 +1,5 @@
 # Playwright TypeScript Automation Framework
 
-
 ## Overview
 
 This repository contains a TypeScript-based automation framework utilizing Playwright for web application testing and automation. Playwright is a powerful tool that allows you to automate interactions with web browsers in a cross-browser fashion.
