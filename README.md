@@ -1,8 +1,3 @@
-# Automation_Project
-Certainly! Here's a professional-level `README.md` template tailored for a Playwright TypeScript automation project:
-
----
-
 # Playwright TypeScript Automation Framework
 
 ![Playwright Logo](https://playwright.dev/img/playwright-logo.png)
