@@ -33,6 +33,8 @@ This repository contains a TypeScript-based automation framework utilizing Playw
 
    ```bash
    npm init playwright@latest
+   # For adding allure report
+   npm i -D allure-playwright
    ```
 
 ### Running Tests
