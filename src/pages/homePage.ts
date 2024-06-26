@@ -1,20 +1,32 @@
-import { expect, Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 
 export default class HomePage {
-  private readonly productPhotoSelector = ".product-item-photo";
-  constructor(private page: Page) {}
+  private readonly productPhotoLocator: Locator;
+  private readonly loggedInUserInHomePageLocator: Locator;
+  private readonly signInLinkLocator: Locator;
+  private readonly signOutLinkLocator: Locator;
+  private readonly dropDownArrowLocator: Locator;
+  constructor(private page: Page) {
+    this.productPhotoLocator = page.locator(".product-item-photo")
+    this.loggedInUserInHomePageLocator = page.getByRole("banner").getByText("Welcome, Ramesh Murugan!")
+    this.signInLinkLocator = page.getByRole("link").getByText("Sign In")
+    this.signOutLinkLocator = page.getByRole("link").filter({ hasText: "Sign Out" })
+    this.dropDownArrowLocator = page
+      .getByRole("button")
+      .locator("[data-action='customer-menu-toggle']:visible")
+  }
 
   async navigateToUrl() {
     await this.page.goto("/");
   }
 
-  async clickSignInLink(text: string) {
-    await this.page.getByRole("link").getByText(text).click();
+  async clickSignInLink() {
+    await this.signInLinkLocator.click();
   }
 
-  async verifyLoggedInUserInHomePage(greetUser: string) {
+  async verifyLoggedInUserInHomePage() {
     await expect(
-      this.page.getByRole("banner").getByText(greetUser),
+      this.loggedInUserInHomePageLocator,
     ).toBeVisible();
   }
 
@@ -23,23 +35,21 @@ export default class HomePage {
   }
 
   async clickDropDownArrow() {
-    await this.page
-      .getByRole("button")
-      .locator("[data-action='customer-menu-toggle']:visible")
+    await this.dropDownArrowLocator
       .click();
   }
 
   async clickSignOutLink() {
-    await this.page.getByRole("link").filter({ hasText: "Sign Out" }).click();
+    await this.signOutLinkLocator.click();
   }
 
-  async verifyNavigatedToSignOutPage() {
-    await expect(this.page).toHaveURL(
-      "https://magento.softwaretestingboard.com/customer/account/logoutSuccess/",
+  async verifyNavigatedToSignOutPage(logOurUrl: string) {
+    await expect(this.page).toHaveURL(logOurUrl
+      ,
     );
   }
 
   async clickFirstProductLink() {
-    await this.page.locator(this.productPhotoSelector).first().click();
+    await this.productPhotoLocator.first().click();
   }
 }

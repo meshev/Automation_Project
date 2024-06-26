@@ -1,5 +1,3 @@
-Creating 100 test cases for the Magento Software Testing Board website involves covering a wide range of functionalities, scenarios, and edge cases. Here's an extensive list to thoroughly test different aspects of the website:
-
 ### 1. Homepage and Navigation:
 
 1. **Verify Homepage Loads Correctly**

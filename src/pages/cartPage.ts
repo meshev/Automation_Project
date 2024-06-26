@@ -1,18 +1,19 @@
-import { expect, Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 
 export default class CartPage {
-  constructor(private page: Page) {}
+  private readonly proceedToCheckoutBtnLocator: Locator
+  constructor(private page: Page) {
+    this.proceedToCheckoutBtnLocator = page.getByRole("button").filter({ hasText: "Proceed to Checkout" })
+  }
 
   async verifyProceedToCheckoutBtn() {
     await expect(
-      this.page.getByRole("button").filter({ hasText: "Proceed to Checkout" }),
+      this.proceedToCheckoutBtnLocator
     ).toBeVisible();
   }
 
   async clickProceedToCheckoutBtn() {
-    await this.page
-      .getByRole("button")
-      .filter({ hasText: "Proceed to Checkout" })
+    await this.proceedToCheckoutBtnLocator
       .click();
   }
 }

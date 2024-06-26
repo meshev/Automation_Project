@@ -1,40 +1,55 @@
-import { expect, Page } from "@playwright/test";
+import { expect, type Locator, Page } from "@playwright/test";
 
 export default class LoginPage {
-  private readonly emailSelector = "#email";
-  private readonly passwordSelector = "#pass";
-  private readonly buttonSelector = "[type='submit']";
-  private readonly resetPasswordEmailSelector = "#email_address";
+  private readonly emailLocator: Locator;
+  private readonly passwordLocator: Locator;
+  private readonly resetPasswordEmailLocator: Locator;
+  private readonly errorLocator: Locator;
+  private readonly signInBtnLocator: Locator;
+  private readonly successLocator: Locator;
+  private readonly resetPasswordBtnLocator: Locator;
+  private readonly forgotYourPasswordLinkLocator: Locator;
 
-  constructor(private page: Page) {}
+  constructor(private page: Page) {
+    this.emailLocator = page.locator("#email")
+    this.passwordLocator = page.locator("#pass")
+    this.errorLocator = page.locator(".error")
+    this.signInBtnLocator = page.locator("[type='submit']").getByText("Sign In")
+    this.successLocator = page.locator(".success")
+    this.resetPasswordBtnLocator = page
+      .getByRole("button")
+      .filter({ hasText: "Reset My Password" })
+    this.forgotYourPasswordLinkLocator = page
+      .getByRole("link")
+      .filter({ hasText: "Forgot Your Password?" })
+    this.resetPasswordEmailLocator = page.locator("#email_address")
+  }
 
   async verifySignInPageTitle(title: string) {
     await expect(this.page).toHaveTitle(title);
   }
 
   async fillUserCredentials(email: string, password: string) {
-    await this.page.locator(this.emailSelector).fill(email);
-    await this.page.locator(this.passwordSelector).fill(password);
+    await this.emailLocator.fill(email);
+    await this.passwordLocator.fill(password);
   }
 
-  async clickSignInBtn(text: string) {
-    await this.page.locator(this.buttonSelector).getByText(text).click();
+  async clickSignInBtn() {
+    await this.signInBtnLocator.click();
   }
 
   async verifyErrorMsgForInValidUser(errorMsg: string) {
-    await expect(this.page.locator(".error")).toHaveText(errorMsg);
+    await expect(this.errorLocator).toHaveText(errorMsg);
   }
 
   async verifyForgotYourPasswordLinkIsVisible() {
     await expect(
-      this.page.getByRole("link").filter({ hasText: "Forgot Your Password?" }),
+      this.forgotYourPasswordLinkLocator,
     ).toBeVisible();
   }
 
   async clickForgotYourPasswordLink() {
-    await this.page
-      .getByRole("link")
-      .filter({ hasText: "Forgot Your Password?" })
+    await this.forgotYourPasswordLinkLocator
       .click();
   }
 
@@ -43,17 +58,15 @@ export default class LoginPage {
   }
 
   async fillEmailForResetPassword(email: string) {
-    await this.page.locator(this.resetPasswordEmailSelector).fill(email);
+    await this.resetPasswordEmailLocator.fill(email);
   }
 
   async clickResetMyPasswordBtn() {
-    await this.page
-      .getByRole("button")
-      .filter({ hasText: "Reset My Password" })
+    await this.resetPasswordBtnLocator
       .click();
   }
 
   async verifySuccesMsgResetPassword(successMsg: string) {
-    await expect(this.page.locator(".success")).toHaveText(successMsg);
+    await expect(this.successLocator).toHaveText(successMsg);
   }
 }
