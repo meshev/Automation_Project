@@ -1,33 +1,29 @@
-import { faker } from '@faker-js/faker';
-import * as fs from 'fs';
-import path from 'path';
-
+import { faker } from "@faker-js/faker";
+import * as fs from "fs";
+import path from "path";
 
 // Define the type for the user data
 interface UserData {
   firstname: string;
-  lastname: string
+  lastname: string;
   email: string;
   password: string;
-
 }
 
 // Function to generate fake user data
 const newUserData = (): UserData => {
   return {
-
     firstname: faker.person.firstName(),
     lastname: faker.person.lastName(),
     email: faker.internet.email(),
     password: faker.internet.password(),
-
   };
 };
 
 // Function to generate an array of fake user data
 export const generateTestData = (numRecords: number): UserData[] => {
   const testData: UserData[] = faker.helpers.multiple(newUserData, {
-    count: numRecords
+    count: numRecords,
   });
   return testData;
 };
@@ -41,8 +37,8 @@ const testdataDir = path.resolve(srcDir, "data");
 
 // Function to export data to JSON file
 export const exportToJson = (data: UserData[], fileName: string) => {
-  fs.writeFileSync(`${testdataDir}\\${fileName}`, JSON.stringify(data, null, 2));
-  console.log(`Data exported to JSON file: ${testdataDir}\\${fileName}`);
+  fs.writeFileSync(`${testdataDir}/${fileName}`, JSON.stringify(data, null, 2));
+  console.log(`Data exported to JSON file: ${testdataDir}/${fileName}`);
 };
 
 // Function to export data to CSV file
@@ -59,8 +55,6 @@ export const exportToJson = (data: UserData[], fileName: string) => {
 //       { id: 'address', title: 'Address' },
 //     ],
 //   });
-
-
 
 //   csvWriter.writeRecords(data).then(() => {
 //     console.log(`Data exported to CSV file: ${testdataDir}\\${fileName}`);

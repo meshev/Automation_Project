@@ -4,15 +4,13 @@ import {
   loginUserInChecckoutPage,
   loginValidUser,
   registerANewUser,
-  validateForgotYourPassword
+  validateForgotYourPassword,
 } from "../data/data.json";
 import { test } from "../fixtures/custom-fixtures";
-import { exportToJson, generateTestData } from '../helpers/faker';
+import { exportToJson, generateTestData } from "../helpers/faker";
 
 test.describe("User Authentication", () => {
-
   test("loginValidUser", async ({ page, homePage, loginPage }) => {
-
     await page.goto(loginValidUser[0].url);
     await homePage.clickSignInLink();
     await loginPage.verifySignInPageTitle(loginValidUser[0].title);
@@ -27,7 +25,6 @@ test.describe("User Authentication", () => {
   });
 
   test("loginInValidUser", async ({ page, homePage, loginPage }) => {
-
     await page.goto(loginInValidUser[0].url);
     await homePage.clickSignInLink();
     await loginPage.verifySignInPageTitle(loginInValidUser[0].title);
@@ -40,7 +37,6 @@ test.describe("User Authentication", () => {
   });
 
   test("loginLogoutFlow", async ({ page, homePage, loginPage }) => {
-
     await page.goto(loginLogoutFlow[0].url);
     await homePage.clickSignInLink();
     await loginPage.verifySignInPageTitle(loginLogoutFlow[0].title);
@@ -60,7 +56,6 @@ test.describe("User Authentication", () => {
   });
 
   test("validateForgotYourPassword", async ({ page, homePage, loginPage }) => {
-
     await page.goto(validateForgotYourPassword[0].url);
     await homePage.clickSignInLink();
     await loginPage.verifyForgotYourPasswordLinkIsVisible();
@@ -77,14 +72,13 @@ test.describe("User Authentication", () => {
     );
   });
 
-  test.only("loginUserInChecckoutPage", async ({
+  test("loginUserInChecckoutPage", async ({
     page,
     homePage,
     productPage,
     cartPage,
     checkoutPage,
   }) => {
-
     await page.goto(loginUserInChecckoutPage[0].url);
     await homePage.clickFirstProductLink();
     await productPage.verifyFirstProductDetailPage(
@@ -99,8 +93,10 @@ test.describe("User Authentication", () => {
     await productPage.clickCartIcon();
     await cartPage.verifyProceedToCheckoutBtn();
     await cartPage.clickProceedToCheckoutBtn();
-    await page.waitForTimeout(100)
-    await checkoutPage.verifyCheckoutPageTitle(loginUserInChecckoutPage[0].title);
+    await page.waitForTimeout(2000);
+    await checkoutPage.verifyCheckoutPageTitle(
+      loginUserInChecckoutPage[0].title,
+    );
     await checkoutPage.verifySignInBtn();
     await checkoutPage.clickSignInBtn();
     await checkoutPage.verifyLoginPopUP();
@@ -113,18 +109,34 @@ test.describe("User Authentication", () => {
 });
 
 test.describe("Registering New User", () => {
-
-  test('register a new user', async ({ page, loginPage, homePage, myAccountPage }) => {
-    const testData = generateTestData(1)
-    exportToJson(testData, 'newUser.json');
+  test("register a new user", async ({
+    page,
+    loginPage,
+    homePage,
+    myAccountPage,
+  }) => {
+    const testData = generateTestData(1);
+    exportToJson(testData, "newUser.json");
     await page.goto(registerANewUser[0].url);
     await homePage.clickCreateAccountLink();
     await loginPage.verifyNewUserPageTitle(registerANewUser[0].title);
-    await loginPage.fillNewUserDetails(testData[0].firstname, testData[0].lastname, testData[0].email, testData[0].password);
-    await loginPage.clickCreateAccountBtn()
+    await loginPage.fillNewUserDetails(
+      testData[0].firstname,
+      testData[0].lastname,
+      testData[0].email,
+      testData[0].password,
+    );
+    await loginPage.clickCreateAccountBtn();
     await page.screenshot();
-    await myAccountPage.verifyNavigatedToMyAccountPage(registerANewUser[0].myAccountUrl)
-    await myAccountPage.verifySuccesfulAccCreatedMsg(registerANewUser[0].SuccessMsg)
-    await myAccountPage.verifyUserNameIsVisible(testData[0].firstname, testData[0].lastname)
-  })
-})
+    await myAccountPage.verifyNavigatedToMyAccountPage(
+      registerANewUser[0].myAccountUrl,
+    );
+    await myAccountPage.verifySuccesfulAccCreatedMsg(
+      registerANewUser[0].SuccessMsg,
+    );
+    await myAccountPage.verifyUserNameIsVisible(
+      testData[0].firstname,
+      testData[0].lastname,
+    );
+  });
+});

@@ -1,1 +1,0 @@
-Data exported to JSON file: /Users/rameshmurugan/Development/playwright-typescript-automation/src/data\newUser.json
