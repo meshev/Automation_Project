@@ -50,5 +50,13 @@
       "email": "rameshmtester1@gmail.com",
       "password": "Testing@123"
     }
+  ],
+  "registerANewUser": [
+    {
+      "url": "https://magento.softwaretestingboard.com/",
+      "title": "Create New Customer Account",
+      "myAccountUrl": "https://magento.softwaretestingboard.com/customer/account/",
+      "SuccessMsg": "Thank you for registering with Main Website Store."
+    }
   ]
 }

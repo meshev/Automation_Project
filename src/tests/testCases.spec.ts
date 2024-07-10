@@ -3,11 +3,13 @@ import {
   loginLogoutFlow,
   loginUserInChecckoutPage,
   loginValidUser,
-  validateForgotYourPassword,
+  registerANewUser,
+  validateForgotYourPassword
 } from "../data/data.json";
 import { test } from "../fixtures/custom-fixtures";
+import { exportToJson, generateTestData } from '../helpers/faker';
 
-test.describe("User Authentication", async () => {
+test.describe("User Authentication", () => {
 
   test("loginValidUser", async ({ page, homePage, loginPage }) => {
 
@@ -75,7 +77,7 @@ test.describe("User Authentication", async () => {
     );
   });
 
-  test("loginUserInChecckoutPage", async ({
+  test.only("loginUserInChecckoutPage", async ({
     page,
     homePage,
     productPage,
@@ -97,6 +99,7 @@ test.describe("User Authentication", async () => {
     await productPage.clickCartIcon();
     await cartPage.verifyProceedToCheckoutBtn();
     await cartPage.clickProceedToCheckoutBtn();
+    await page.waitForTimeout(100)
     await checkoutPage.verifyCheckoutPageTitle(loginUserInChecckoutPage[0].title);
     await checkoutPage.verifySignInBtn();
     await checkoutPage.clickSignInBtn();
@@ -108,3 +111,20 @@ test.describe("User Authentication", async () => {
     await checkoutPage.clickSignInButton();
   });
 });
+
+test.describe("Registering New User", () => {
+
+  test('register a new user', async ({ page, loginPage, homePage, myAccountPage }) => {
+    const testData = generateTestData(1)
+    exportToJson(testData, 'newUser.json');
+    await page.goto(registerANewUser[0].url);
+    await homePage.clickCreateAccountLink();
+    await loginPage.verifyNewUserPageTitle(registerANewUser[0].title);
+    await loginPage.fillNewUserDetails(testData[0].firstname, testData[0].lastname, testData[0].email, testData[0].password);
+    await loginPage.clickCreateAccountBtn()
+    await page.screenshot();
+    await myAccountPage.verifyNavigatedToMyAccountPage(registerANewUser[0].myAccountUrl)
+    await myAccountPage.verifySuccesfulAccCreatedMsg(registerANewUser[0].SuccessMsg)
+    await myAccountPage.verifyUserNameIsVisible(testData[0].firstname, testData[0].lastname)
+  })
+})

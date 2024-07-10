@@ -6,6 +6,8 @@ export default class HomePage {
   private readonly signInLinkLocator: Locator;
   private readonly signOutLinkLocator: Locator;
   private readonly dropDownArrowLocator: Locator;
+  private readonly createAccountLinkLocator: Locator;
+
   constructor(private page: Page) {
     this.productPhotoLocator = page.locator(".product-item-photo")
     this.loggedInUserInHomePageLocator = page.getByRole("banner").getByText("Welcome, Ramesh Murugan!")
@@ -14,6 +16,7 @@ export default class HomePage {
     this.dropDownArrowLocator = page
       .getByRole("button")
       .locator("[data-action='customer-menu-toggle']:visible")
+    this.createAccountLinkLocator = page.getByRole("link").getByText("Create an Account")
   }
 
   async navigateToUrl() {
@@ -22,6 +25,10 @@ export default class HomePage {
 
   async clickSignInLink() {
     await this.signInLinkLocator.click();
+  }
+
+  async clickCreateAccountLink() {
+    await this.createAccountLinkLocator.click();
   }
 
   async verifyLoggedInUserInHomePage() {

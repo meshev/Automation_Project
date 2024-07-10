@@ -2,6 +2,7 @@ import { expect, type Locator, Page } from "@playwright/test";
 
 export default class LoginPage {
   private readonly emailLocator: Locator;
+  private readonly emailNewUserLocator: Locator;
   private readonly passwordLocator: Locator;
   private readonly resetPasswordEmailLocator: Locator;
   private readonly errorLocator: Locator;
@@ -9,8 +10,18 @@ export default class LoginPage {
   private readonly successLocator: Locator;
   private readonly resetPasswordBtnLocator: Locator;
   private readonly forgotYourPasswordLinkLocator: Locator;
+  private readonly passwordNewUserLocator: Locator
+  private readonly confirmpasswordNewUserLocator: Locator
+  private readonly firstNameLocator: Locator
+  private readonly lastNameLocator: Locator
+  private readonly createAccountBtnLocator: Locator
 
   constructor(private page: Page) {
+    this.emailNewUserLocator = page.locator("#email_address")
+    this.passwordNewUserLocator = page.locator("#password")
+    this.confirmpasswordNewUserLocator = page.locator("#password-confirmation")
+    this.firstNameLocator = page.locator("#firstname")
+    this.lastNameLocator = page.locator("#lastname")
     this.emailLocator = page.locator("#email")
     this.passwordLocator = page.locator("#pass")
     this.errorLocator = page.locator(".error")
@@ -23,6 +34,7 @@ export default class LoginPage {
       .getByRole("link")
       .filter({ hasText: "Forgot Your Password?" })
     this.resetPasswordEmailLocator = page.locator("#email_address")
+    this.createAccountBtnLocator = page.getByRole("button").getByText("Create an Account")
   }
 
   async verifySignInPageTitle(title: string) {
@@ -68,5 +80,20 @@ export default class LoginPage {
 
   async verifySuccesMsgResetPassword(successMsg: string) {
     await expect(this.successLocator).toHaveText(successMsg);
+  }
+
+  async verifyNewUserPageTitle(title: string) {
+    await expect(this.page).toHaveTitle(title);
+  }
+
+  async fillNewUserDetails(firstname: string, lastname: string, email: string, password: string) {
+    await this.firstNameLocator.fill(firstname)
+    await this.lastNameLocator.fill(lastname)
+    await this.emailNewUserLocator.fill(email);
+    await this.passwordNewUserLocator.fill(password);
+    await this.confirmpasswordNewUserLocator.fill(password);
+  }
+  async clickCreateAccountBtn() {
+    await this.createAccountBtnLocator.click();
   }
 }

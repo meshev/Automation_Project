@@ -8,7 +8,7 @@ export default class CheckoutPage {
   private readonly buttonLocator: Locator
 
   constructor(private page: Page) {
-    this.emailLocator = page.locator("#login-email").first()
+    this.emailLocator = page.locator("#login-email")
     this.passwordLocator = page.locator("#login-password")
     this.loginPopUpLocator = page.locator(".modal-inner-wrap:visible")
     this.signInBtnLocator = page.locator(".action-auth-toggle")
