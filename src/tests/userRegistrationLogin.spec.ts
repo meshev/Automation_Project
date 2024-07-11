@@ -96,6 +96,7 @@ test.describe("User Authentication", () => {
                   loginUserInChecckoutPage[0].quantity,
             );
             await productPage.clickAddToCartBtn();
+            await page.waitForLoadState("networkidle");
             await productPage.verifySuccessMsgAddToCart(
                   loginUserInChecckoutPage[0].successMsg,
             );
