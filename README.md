@@ -32,9 +32,7 @@ This repository contains a TypeScript-based automation framework utilizing Playw
 2. Install dependencies:
 
    ```bash
-   npm init playwright@latest
-   # For adding allure report
-   npm i -D allure-playwright
+   npm install
    ```
 
 ### Running Tests
