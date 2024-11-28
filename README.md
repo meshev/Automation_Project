@@ -32,7 +32,10 @@ This repository contains a TypeScript-based automation framework utilizing Playw
 2. Install dependencies:
 
    ```bash
+   # For installing dependencies
    npm install
+   # For downloading browsers
+   npx playwright install
    ```
 
 ### Running Tests
